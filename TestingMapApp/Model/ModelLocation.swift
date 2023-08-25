@@ -28,7 +28,10 @@ struct ModelLocation:Identifiable {
         self.volumeSignal = volumeSignal
     }
     
-    
+    // Equatable
+    static func == (lhs: ModelLocation, rhs: ModelLocation) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 

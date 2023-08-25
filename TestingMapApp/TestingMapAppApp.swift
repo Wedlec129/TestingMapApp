@@ -13,7 +13,7 @@ struct TestingMapAppApp: App {
     @StateObject private var vm = ViewModelLocation()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LocationView()
                 .environmentObject(vm)
                 
         }

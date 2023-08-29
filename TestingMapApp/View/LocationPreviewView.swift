@@ -14,23 +14,25 @@ struct LocationPreviewView: View {
     let location: ModelLocation
     
     var body: some View {
-        HStack(alignment: .bottom, spacing: 0) {
-            VStack(alignment: .leading, spacing: 16) {
-                imageSection
-                titleSection
+        
+      
+            VStack{
+                
+                Spacer()
+                
+               
+                    titleSection
+                    
+              
+                
+                
+                
             }
             
-            VStack(spacing: 8) {
-                nextButton
-            }
-        }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.ultraThinMaterial)
-                .offset(y: 65)
-        )
-        .cornerRadius(10)
+        
+        
+        
+        
     }
 }
 
@@ -39,8 +41,8 @@ struct LocationPreviewView_Previews: PreviewProvider {
         ZStack {
             Color.green.ignoresSafeArea()
             
-            LocationPreviewView(location: ModelLocation(nameLocation: "Аня", coordinates: CLLocationCoordinate2D(latitude: 41.8902, longitude: 12.4922), image: "anna", dataLast: 2, timeLast: 44, volumeSignal: 100))
-                .padding()
+            LocationPreviewView(location: ModelLocation(nameLocation: "Аня", coordinates: CLLocationCoordinate2D(latitude: 41.8902, longitude: 12.4922), image: "anna",dataLast: "02.07.2017", timeLast: "14:00", volumeSignal: .good))
+                //.padding()
         }
         .environmentObject(ViewModelLocation())
     }
@@ -48,44 +50,92 @@ struct LocationPreviewView_Previews: PreviewProvider {
 
 extension LocationPreviewView {
     
-    private var imageSection: some View {
-        ZStack {
-          
-                Image(location.image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 100, height: 100)
-                    .cornerRadius(10)
-            
-        }
-        .padding(6)
-        .background(Color.white)
-        .cornerRadius(10)
-    }
+    
     
     private var titleSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(location.nameLocation)
-                .font(.title2)
-                .fontWeight(.bold)
-            
-            Text("\(location.dataLast)")
-                .font(.subheadline)
+        ZStack{
+            Color.white
+                .ignoresSafeArea()
+                .frame(width: .infinity,height: 200)
+               
+                
+            VStack{
+                HStack{
+                    Image(location.image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(10)
+                    
+                    
+                    VStack(alignment: .leading,spacing: 5) {
+                        Text(location.nameLocation)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        HStack{
+                            
+                            HStack(spacing: 2){
+                                // Image(systemName: "calendar")
+                                
+                                switch(location.volumeSignal){
+                                case .good:
+                                    Image(systemName: "wifi")
+                                        .foregroundColor(.accentColor)
+                                case .norm:
+                                    Image(systemName: "wifi.exclamationmark")
+                                        .foregroundColor(.accentColor)
+                                case .bad:
+                                    Image(systemName: "wifi.slash")
+                                        .foregroundColor(.accentColor)
+                                }
+                                Text("GPS ")
+                                
+                                
+                            }
+                            
+                            
+                            HStack{
+                                Image(systemName: "calendar")
+                                    .foregroundColor(.accentColor)
+                                Text("\(location.dataLast)")
+                                    .font(.subheadline)
+                            }
+                            
+                            HStack{
+                                Image(systemName: "clock")
+                                    .foregroundColor(.accentColor)
+                                Text("\(location.timeLast)")
+                                    .font(.subheadline)
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        
+                    }
+                   
+                }
+                HStack{
+                   
+                    Spacer()
+                    showStoris
+                    Spacer()
+                }
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
-   
     
-    private var nextButton: some View {
+    
+    private var showStoris: some View {
         Button {
-            vm.nextButtonPressed()
+            // vm.nextButtonPressed()
         } label: {
-            Text("Next")
+            Text("Посмотреть историю")
                 .font(.headline)
-                .frame(width: 125, height: 35)
+                .frame(width: .infinity, height: 30)
         }
-        .buttonStyle(.bordered)
+        .buttonStyle(.borderedProminent)
+        
     }
     
 }

@@ -14,6 +14,16 @@ class ViewModelLocation: ObservableObject {
     //all loadet location
     @Published var locations: [ModelLocation] = []
     
+    //sekor map
+    @Published var size:Double = 0.04 {
+        didSet {
+            if size > 0 {
+                mapSpan = MKCoordinateSpan(latitudeDelta: size, longitudeDelta: size)
+                updateMapRegion(location: mapLocation)
+            }
+        }
+    }
+    
     
     // Current location on map
     @Published var mapLocation: ModelLocation! {
@@ -23,7 +33,7 @@ class ViewModelLocation: ObservableObject {
     }
     // Current region on map
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
-    let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    @Published var  mapSpan :MKCoordinateSpan!
     
     
     // Show list of locations
@@ -31,7 +41,8 @@ class ViewModelLocation: ObservableObject {
     
     init(){
         fetchLocation()
-        
+       
+        mapSpan = MKCoordinateSpan(latitudeDelta: size, longitudeDelta: size)
         
         self.mapLocation = self.locations.first!
         self.updateMapRegion(location: locations.first!)
@@ -40,9 +51,11 @@ class ViewModelLocation: ObservableObject {
     
     //типо получаем данные (потом можно парсить json)
     func fetchLocation(){
-        locations.append(ModelLocation(nameLocation: "Аня", coordinates: CLLocationCoordinate2D(latitude: 41.8902, longitude: 12.4922), image: "anna", dataLast: 2, timeLast: 44, volumeSignal: 100))
         
-        locations.append(ModelLocation(nameLocation: "Давид", coordinates: CLLocationCoordinate2D(latitude: 41.8986, longitude: 12.4769), image: "david", dataLast: 21, timeLast: 14, volumeSignal: 90))
+        
+        locations.append(ModelLocation(nameLocation: "Аня", coordinates: CLLocationCoordinate2D(latitude: 41.8902, longitude: 12.4922), image: "anna", dataLast: "02.07.2017", timeLast: "14:00", volumeSignal: .good))
+        
+        locations.append(ModelLocation(nameLocation: "Давид", coordinates: CLLocationCoordinate2D(latitude: 41.8986, longitude: 12.4769), image: "david", dataLast: "06.07.2017", timeLast: "18:00", volumeSignal: .norm))
         
     }
     
@@ -93,3 +106,48 @@ class ViewModelLocation: ObservableObject {
     }
 }
 
+
+
+//get my location
+final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    
+    
+    @Published var region = MKCoordinateRegion (center: CLLocationCoordinate2D (latitude: 40,longitude: 120),
+                                                span: MKCoordinateSpan (latitudeDelta: 100, longitudeDelta: 100))
+    let locationManger = CLLocationManager()
+    
+    @Published var coordinate :CLLocationCoordinate2D?
+    
+    override init() {
+        super.init()
+        locationManger.delegate = self
+    }
+    
+    
+    func requestAllowOnceLocationPermission() {
+        locationManger.requestLocation()
+    }
+    func locationManager (_ manager: CLLocationManager, didUpdateLocations locations:  [CLLocation]) {
+        guard let latestLocation = locations.first else {
+            //error
+            return
+            
+        }
+        DispatchQueue.main.async {
+            self.region = MKCoordinateRegion (center: latestLocation.coordinate, span:
+                                                MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+            
+            print(latestLocation.coordinate)
+            self.coordinate = latestLocation.coordinate
+           
+            
+        }
+    }
+    
+    
+    func locationManager (_ manager: CLLocationManager, didFailWithError error: Error) {
+        print (error.localizedDescription)
+    }
+}
+    
+    

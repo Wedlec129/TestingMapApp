@@ -14,12 +14,13 @@ struct ModelLocation:Identifiable {
     let nameLocation :String
     let coordinates :CLLocationCoordinate2D
     let image :String
+    let dataLast :String
+    let timeLast :String
+    var volumeSignal:VolumeSignal
     
-    let dataLast :Int
-    let timeLast :Int
-    let volumeSignal :Int  //next is enum
+   // var story
     
-    init(nameLocation: String, coordinates: CLLocationCoordinate2D, image: String, dataLast: Int, timeLast: Int, volumeSignal: Int) {
+    init(nameLocation: String, coordinates: CLLocationCoordinate2D, image: String, dataLast: String, timeLast: String, volumeSignal: VolumeSignal) {
         self.nameLocation = nameLocation
         self.coordinates = coordinates
         self.image = image
@@ -34,5 +35,8 @@ struct ModelLocation:Identifiable {
     }
 }
 
+enum VolumeSignal{
+    case bad, norm, good
+}
 
 

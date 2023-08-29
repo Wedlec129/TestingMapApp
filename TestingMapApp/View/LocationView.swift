@@ -7,43 +7,30 @@
 
 import SwiftUI
 import MapKit
+import CoreLocationUI
 
 struct LocationView: View {
     
     @EnvironmentObject var vm: ViewModelLocation
     
+    
+    @StateObject var viewModel = ContentViewModel()
+    
     var body: some View {
-        
-        
-        
         ZStack(){
-            
             mapLayer
-            .ignoresSafeArea()
-            
+                .ignoresSafeArea()
+  
             
             VStack(spacing: 0) {
                 header
                     .padding()
-                
-                
                 Spacer()
-                
                 ZStack{
-                    
                     LocationPreviewView(location: vm.mapLocation)
-                        
                 }
-                
-                
             }
-            
-            
-            
         }
-        
-        
-        
     }
 }
 
@@ -80,11 +67,6 @@ extension LocationView {
                 LocationsListView()
             }
             
-            
-            
-            
-            
-            
         }
         
         .background(.thickMaterial)
@@ -94,21 +76,92 @@ extension LocationView {
     
     
     private var mapLayer: some View {
-        Map(coordinateRegion: $vm.mapRegion,
-            annotationItems: vm.locations,
-            annotationContent: { location in
-            MapAnnotation(coordinate: location.coordinates) {
-                LocationMapAnnotationView()
-                    .scaleEffect(vm.mapLocation == location ? 1 : 0.7)
-                    .shadow(radius: 10)
-                    .onTapGesture {
-                        vm.showNextLocation(location: location)
+        ZStack{
+            
+            Map(coordinateRegion: $vm.mapRegion,
+                showsUserLocation: true,
+                annotationItems: vm.locations,
+                annotationContent: { location in
+                MapAnnotation(coordinate: location.coordinates) {
+                    ZStack{
+
+
+
+                        LocationMapAnnotationView(location: location)
+                            .scaleEffect(vm.mapLocation == location ? 1 : 0.7)
+                            .shadow(radius: 10)
+                            .onTapGesture {
+                                vm.showNextLocation(location: location)
+                            }
+
+
+
+
                     }
+                }
             }
-        })
+            )
+
+            mapButton
+            
+            LocationButton(.currentLocation){
+                viewModel.requestAllowOnceLocationPermission()
+                
+            }
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            .labelStyle(.titleAndIcon)
+            .tint(.pink)
+            
+    
+            
+            
+        }
+        
+        
+        
+        
     }
     
     
+    private var mapButton: some View {
         
+        HStack{
+            Spacer()
+            VStack{
+                Button(action: {
+                    vm.size = vm.size - 0.03
+                }, label: {
+                    Image("ic_zoom_plus")
+                        .resizable()
+                        .frame(width: 80,height: 80)
+                })
+                
+                Button(action: {
+                    vm.size = vm.size + 0.05
+                }, label: {
+                    Image("ic_zoom_minus")
+                        .resizable()
+                        .frame(width: 80,height: 80)
+                })
+                Image("ic_mylocation")
+                    .resizable()
+                    .frame(width: 80,height: 80)
+                
+                Button(action: {
+                    vm.nextButtonPressed()
+                }, label: {
+                    Image("ic_next_tracker")
+                        .resizable()
+                        .frame(width: 80,height: 80)
+                })
+                
+            }
+        }
+    }
+    
+    
+    
 }
+
 

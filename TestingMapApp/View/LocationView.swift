@@ -14,7 +14,7 @@ struct LocationView: View {
     @EnvironmentObject var vm: ViewModelLocation
     
     
-    @StateObject var viewModel = ContentViewModel()
+   
     
     var body: some View {
         ZStack(){
@@ -104,15 +104,15 @@ extension LocationView {
 
             mapButton
             
-            LocationButton(.currentLocation){
-                viewModel.requestAllowOnceLocationPermission()
-                
-            }
-            .foregroundColor(.white)
-            .cornerRadius(8)
-            .labelStyle(.titleAndIcon)
-            .tint(.pink)
-            
+//            LocationButton(.currentLocation){
+//                viewModel.requestAllowOnceLocationPermission()
+//                
+//            }
+//            .foregroundColor(.white)
+//            .cornerRadius(8)
+//            .labelStyle(.titleAndIcon)
+//            .tint(.pink)
+//            
     
             
             

@@ -16,6 +16,9 @@ struct LocationView: View {
     
     @StateObject var viewModel = ContentViewModel()
     
+    
+    @State var showMe = false
+    
     var body: some View {
         ZStack(){
             mapLayer
@@ -78,7 +81,7 @@ extension LocationView {
     private var mapLayer: some View {
         ZStack{
             
-            Map(coordinateRegion: $vm.mapRegion,
+            Map(coordinateRegion: showMe ? $viewModel.region : $vm.mapRegion,
                 showsUserLocation: true,
                 annotationItems: vm.locations,
                 annotationContent: { location in
@@ -106,7 +109,7 @@ extension LocationView {
             
             LocationButton(.currentLocation){
                 viewModel.requestAllowOnceLocationPermission()
-                
+                showMe = true
             }
             .foregroundColor(.white)
             .cornerRadius(8)
@@ -149,6 +152,7 @@ extension LocationView {
                     .frame(width: 80,height: 80)
                 
                 Button(action: {
+                    showMe = false
                     vm.nextButtonPressed()
                 }, label: {
                     Image("ic_next_tracker")

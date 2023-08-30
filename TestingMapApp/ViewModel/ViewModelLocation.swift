@@ -116,8 +116,7 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
                                                 span: MKCoordinateSpan (latitudeDelta: 100, longitudeDelta: 100))
     let locationManger = CLLocationManager()
     
-    @Published var coordinate :CLLocationCoordinate2D?
-    
+  
     override init() {
         super.init()
         locationManger.delegate = self
@@ -138,7 +137,6 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
                                                 MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
             
             print(latestLocation.coordinate)
-            self.coordinate = latestLocation.coordinate
            
             
         }

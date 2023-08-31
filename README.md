@@ -4,9 +4,22 @@
 
 
 ### Это приложение социальная сеть по типу снепчата.
+# https://youtu.be/WPz3hEOFDbY
+
 Приложение имеет базу данных пользователей которые показываются на карте.
 
 
+# Видео работы:
+<div align="center">
+      <a href="https://youtu.be/WPz3hEOFDbY">
+     <img 
+      src="https://youtu.be/WPz3hEOFDbY/0.jpg" 
+      alt="video" 
+      style="width:100%;">
+      </a>
+    </div>
+    
+<details><summary>Фотографии приложения</summary>
 
 <p align="center">
       <img src="https://github.com/Wedlec129/TestingMapApp/blob/master/image/1.png" width="726">
@@ -18,7 +31,7 @@
       <img src="https://github.com/Wedlec129/TestingMapApp/blob/master/image/3.png" width="726">
 </p>
 
-
+</details>
 
 
 ## About
